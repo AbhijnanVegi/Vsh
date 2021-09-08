@@ -12,11 +12,12 @@
 char hostname[HOST_NAME_MAX];
 char *username;
 
-void prompt() {
+void prompt()
+{
 
     gethostname(hostname, HOST_NAME_MAX);
-    username  = getpwuid(getuid())->pw_name;
+    username = getpwuid(getuid())->pw_name;
 
-    char* cwd = getcwd(NULL, 0);
-    printf(GREEN"[%s@%s "RESET"%s"GREEN"]$ "RESET , username,hostname,cwd);
+    char *cwd = getcwd(NULL, 0);
+    printf(GREEN "[%s@%s " RESET "%s" GREEN "]$ " RESET, username, hostname, cwd);
 }
