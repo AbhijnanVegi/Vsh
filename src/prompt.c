@@ -4,6 +4,7 @@
 #include <pwd.h>
 
 #include "prompt.h"
+#include "utils.h"
 
 #define HOST_NAME_MAX 255
 #define USER_NAME_MAX 255
@@ -17,5 +18,5 @@ void prompt() {
     username  = getpwuid(getuid())->pw_name;
 
     char* cwd = getcwd(NULL, 0);
-    printf("\033[0;32m[%s@%s \033[0m%s\033[0;32m]$\033[0m ", username,hostname,cwd);
+    printf(GREEN"[%s@%s "RESET"%s"GREEN"]$ "RESET , username,hostname,cwd);
 }
