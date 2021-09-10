@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "prompt.h"
+#include "parse.h"
 
 char *line = NULL;
 size_t len = 0;

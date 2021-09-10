@@ -7,6 +7,9 @@
 #include "prompt.h"
 #include "utils.h"
 
+char hostname[HOST_NAME_MAX];
+char *username;
+char *home;
 
 
 void format_directory(char **directory)
