@@ -1,8 +1,9 @@
-#include "prompt.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
+
+#include "prompt.h"
 
 char *line = NULL;
 size_t len = 0;
@@ -18,5 +19,7 @@ int main()
         {
             exit(0);
         }
+
+        parse(line);
     }
 }
