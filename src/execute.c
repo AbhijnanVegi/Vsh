@@ -14,7 +14,7 @@
 // Function: execute
 void execute_command(ArgList *args)
 {
-    if (args->size == 0) 
+    if (args->size == 0)
     {
         return;
     }
@@ -50,8 +50,11 @@ void execute_external(ArgList *args)
     pid_t pid = fork();
     bool bg = false;
 
-    if (strcmp(args->args[args->size-1],"&") == 0)
+    if (strcmp(args->args[args->size - 1], "&") == 0)
+    {
         bg = true;
+        args->size--;
+    }
 
     if (pid == 0)
     {
@@ -60,9 +63,10 @@ void execute_external(ArgList *args)
             args->args[i] = replace_home(args->args[i]);
         }
         AddArg(args, NULL);
-        int status = check_and_throw_error(execvp(args->args[0], args->args ), -1, NULL);
+        int status = check_and_throw_error(execvp(args->args[0], args->args), -1, NULL);
         exit(status);
-    } else
+    }
+    else
     {
         int status;
         if (!bg)
