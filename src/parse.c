@@ -3,6 +3,7 @@
 
 #include "utils.h"
 #include "args.h"
+#include "execute.h"
 
 ArgList* parse_args(char* token)
 {
@@ -31,7 +32,7 @@ void parse(char *line)
     while (token != NULL)
     {
         ArgList* args = parse_args(token);
-
+        execute_command(args);
 
         token = strtok_r(NULL, ";\n", &token_storage);
     }

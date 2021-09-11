@@ -10,6 +10,11 @@
 #define WHITE "\033[0;37m"
 #define RESET "\033[0m"
 
+extern char *home;
+extern int homelen;
+
 void throw_fatal_error();
+char* replace_home(char *path);
+int check_and_throw_error(int return_code, int errno_code);
 
 #endif

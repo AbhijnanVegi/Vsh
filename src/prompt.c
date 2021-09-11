@@ -9,8 +9,6 @@
 
 char hostname[HOST_NAME_MAX];
 char *username;
-char *home = NULL;
-int homelen = 0;
 
 void format_directory(char **directory)
 {
@@ -39,12 +37,6 @@ void prompt()
     username = getpwuid(getuid())->pw_name;
 
     char *cwd = getcwd(NULL, 0);
-    if (home == NULL)
-    {
-        homelen = strlen(cwd);
-        home = malloc(sizeof(char) * homelen);
-        strcpy(home, cwd);
-    }
 
     format_directory(&cwd);
     printf(GREEN "[%s@%s " RESET "%s" GREEN "]$ " RESET, username, hostname, cwd);
