@@ -6,5 +6,6 @@
 void cd(ArgList *args);
 void pwd(ArgList *args);
 void echo(ArgList *args);
+void repeat(ArgList *args);
 
 #endif // BUILTINS_H

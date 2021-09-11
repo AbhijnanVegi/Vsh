@@ -7,12 +7,13 @@
 #include "args.h"
 #include "utils.h"
 #include "builtins.h"
+#include "execute.h"
 
 char *OldDir;
 
 void cd(ArgList *args)
-{   
-    char* curr_dir = getcwd(NULL, 0);
+{
+    char *curr_dir = getcwd(NULL, 0);
 
     if (args->size == 2)
     {
@@ -34,7 +35,7 @@ void cd(ArgList *args)
     }
     else
     {
-        printf(RED"cd: "RESET"%s\n", "Too many arguments");
+        printf(RED "cd: " RESET "%s\n", "Too many arguments");
     }
 
     OldDir = curr_dir;
@@ -53,4 +54,23 @@ void echo(ArgList *args)
         printf("%s ", args->args[i]);
     }
     printf("\n");
+}
+
+void repeat(ArgList *args)
+{
+    if (args->size <= 2)
+    {
+        check_and_throw_error(1, -1, "repeat: Too few arguments");
+    }
+    int n = atoi(args->args[1]);
+    ArgList *subcmd = malloc(sizeof(ArgList));
+    InitArgs(subcmd);
+    for (int i = 2; i < args->size; i++)
+    {
+        AddArg(subcmd, args->args[i]);
+    }
+    for (int i = 0; i < n; i++)
+    {
+        execute_command(subcmd);
+    }
 }

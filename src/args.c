@@ -25,6 +25,13 @@ void AddArg(ArgList *args, char *arg)
             throw_fatal_error();
         }
     }
+    if (arg == NULL)
+    {
+        args->args[args->size] = NULL;
+        args->size++;
+        return;
+    }
+
     char* new_arg = malloc(sizeof(char) * (strlen(arg) + 1));
     if (new_arg == NULL) {
         throw_fatal_error();
