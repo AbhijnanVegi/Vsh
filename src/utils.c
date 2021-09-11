@@ -15,13 +15,15 @@ void throw_fatal_error()
 }
 
 //Error handling for recoverable errors
-int check_and_throw_error(int return_code, int errno_code)
+int check_and_throw_error(int return_code, int errno_code, char* message)
 {
     if (return_code == errno_code)
     {
-        printf(RED);
-        perror("Vsh");
-        printf(RESET);
+        if (message != NULL)
+        {
+            perror(message);
+        }
+        else perror(RED"Vsh"RESET);
     }
     return return_code;
 }

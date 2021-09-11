@@ -5,6 +5,7 @@
 #include "args.h"
 #include "execute.h"
 #include "builtins.h"
+#include "ls.h"
 
 // Function: execute
 void execute_command(ArgList *args)
@@ -25,6 +26,10 @@ void execute_command(ArgList *args)
     else if (strcmp(args->args[0], "echo") == 0)
     {
         echo(args);
+    }
+    else if (strcmp(args->args[0], "ls") == 0)
+    {
+        ls(args);
     }
 }
 

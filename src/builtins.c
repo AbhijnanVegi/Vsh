@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
+#include "ls.h"
 #include "args.h"
 #include "utils.h"
 #include "builtins.h"
@@ -23,12 +25,12 @@ void cd(ArgList *args)
             }
             new_path = OldDir;
         }
-        int return_code = check_and_throw_error(chdir(new_path), -1);
+        int return_code = check_and_throw_error(chdir(new_path), -1, NULL);
         free(new_path);
     }
     else if (args->size == 1)
     {
-        int return_code = check_and_throw_error(chdir(home), -1);
+        int return_code = check_and_throw_error(chdir(home), -1, NULL);
     }
     else
     {

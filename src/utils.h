@@ -15,6 +15,6 @@ extern int homelen;
 
 void throw_fatal_error();
 char* replace_home(char *path);
-int check_and_throw_error(int return_code, int errno_code);
+int check_and_throw_error(int return_code, int errno_code, char* message);
 
 #endif
