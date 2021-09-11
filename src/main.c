@@ -18,9 +18,10 @@ int main()
         ssize_t cmd = getline(&line, &len, stdin);
         if (cmd == EOF)
         {
-            exit(0);
+            break;
         }
 
         parse(line);
     }
+    free(line);
 }
