@@ -71,5 +71,9 @@ void execute_external(ArgList *args)
         int status;
         if (!bg)
             waitpid(pid, &status, WUNTRACED);
+        else
+        {
+            printf("%s -> pid:%d\n", args->args[0], pid);
+        }
     }
 }

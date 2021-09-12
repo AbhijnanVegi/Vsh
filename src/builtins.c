@@ -73,4 +73,5 @@ void repeat(ArgList *args)
     {
         execute_command(subcmd);
     }
+    FreeArgs(subcmd);
 }
