@@ -6,5 +6,5 @@
 
 
 void prompt();
-
+void format_directory(char **directory);
 #endif

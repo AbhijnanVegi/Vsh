@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
 
 #include "ls.h"
 #include "args.h"
 #include "utils.h"
 #include "builtins.h"
 #include "execute.h"
+#include "prompt.h"
 
 char *OldDir;
 
@@ -74,4 +76,84 @@ void repeat(ArgList *args)
         execute_command(subcmd);
     }
     FreeArgs(subcmd);
+}
+
+void pinfo(ArgList *args)
+{
+    pid_t pid;
+
+    if (args->size == 1)
+    {
+        pid = getpid();
+    }
+    else if (args->size == 2)
+    {
+        pid = atoi(args->args[1]);
+    }
+    else
+    {
+        check_and_throw_error(1, 1, "pinfo: Too many arguments");
+        return;
+    }
+
+    char procPath[64];
+    sprintf(procPath, "/proc/%d/stat", pid);
+
+    FILE *procFile = fopen(procPath, "r");
+    if (procFile == NULL)
+    {
+        printf(RED "pinfo: " RESET "%s\n", "No such process");
+        return;
+    }
+
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    read = getline(&line, &len, procFile);
+    if (read == -1)
+    {
+        printf(RED "pinfo: " RESET "%s\n", "No such process");
+        return;
+    }
+
+    printf("pid -> %d\n", pid); // Print pid of process
+
+    char *value;
+    char *storage;
+    int counter = 1;
+    value = strtok_r(line, " ", &storage);
+    while (value != NULL)
+    {
+        if (counter == 3)
+        {
+            printf("Process Status -> %s\n", value);
+        }
+        else if (counter == 23)
+        {
+            printf("Memory -> %s\n", value);
+            break;
+        }
+        value = strtok_r(NULL, " ",&storage);
+        counter++;
+    }
+
+    fclose(procFile);
+    char exeProc[64];
+    sprintf(exeProc, "/proc/%d/exe", pid);
+
+    char *exePath = malloc(sizeof(char) * 257);
+    read = readlink(exeProc, exePath, 256);
+    exePath[read] = '\0';
+    format_directory(&exePath);
+
+
+    if (read == -1)
+    {
+        printf("Executable Path -> NULL\n");
+        return;
+    }
+
+    printf("Executable Path -> %s\n", exePath);
+    return;
 }

@@ -39,6 +39,10 @@ void execute_command(ArgList *args)
     {
         repeat(args);
     }
+    else if (strcmp(args->args[0], "pinfo") == 0)
+    {
+        pinfo(args);
+    }
     else
     {
         execute_external(args);
