@@ -26,21 +26,29 @@ void cd(ArgList *args)
             {
                 OldDir = home;
             }
-            new_path = OldDir;
+            new_path = strdup(OldDir);
         }
         int return_code = check_and_throw_error(chdir(new_path), -1, NULL);
+        if (return_code == -1)
+        {
+            return;
+        }
         free(new_path);
     }
     else if (args->size == 1)
     {
         int return_code = check_and_throw_error(chdir(home), -1, NULL);
+        if (return_code == -1)
+        {
+            return;
+        }
     }
     else
     {
         printf(RED "cd: " RESET "%s\n", "Too many arguments");
     }
 
-    OldDir = curr_dir;
+    OldDir = strdup(curr_dir);
 }
 
 void pwd(ArgList *args)

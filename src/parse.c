@@ -35,6 +35,7 @@ void parse(char *line)
         execute_command(args);
 
         token = strtok_r(NULL, ";\n", &token_storage);
+        FreeArgs(args);
     }
 
 }
