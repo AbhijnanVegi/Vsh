@@ -122,12 +122,25 @@ void pinfo(ArgList *args)
     char *value;
     char *storage;
     int counter = 1;
+    int pgrp;
     value = strtok_r(line, " ", &storage);
     while (value != NULL)
     {
         if (counter == 3)
         {
-            printf("Process Status -> %s\n", value);
+            printf("Process Status -> %s", value);
+        }
+        else if (counter == 5)
+        {
+            pgrp = atoi(value);
+        }
+        else if (counter == 8)
+        {
+            if (pgrp == atoi(value))
+            {
+                printf("+");
+            }
+            printf("\n");
         }
         else if (counter == 23)
         {

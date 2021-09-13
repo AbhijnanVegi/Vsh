@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 #include "args.h"
 #include "execute.h"
@@ -66,6 +67,9 @@ void execute_external(ArgList *args)
         {
             args->args[i] = replace_home(args->args[i]);
         }
+
+        setpgid(0, 0);
+
         AddArg(args, NULL);
         int status = check_and_throw_error(execvp(args->args[0], args->args), -1, NULL);
         exit(status);
@@ -74,7 +78,13 @@ void execute_external(ArgList *args)
     {
         int status;
         if (!bg)
+        {   
+            signal(SIGTTOU, SIG_IGN);
+            tcsetpgrp(0, pid);
             waitpid(pid, &status, WUNTRACED);
+            tcsetpgrp(0, getpgrp());
+            signal(SIGTTOU, SIG_DFL);
+        }
         else
         {
             printf("%s -> pid:%d\n", args->args[0], pid);
