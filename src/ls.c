@@ -75,6 +75,23 @@ void print_ls(char *path, bool l, bool a)
     }
 
     struct dirent *entry;
+    if (l)
+    {
+        int block_count = 0;
+        while ((entry = readdir(dir)) != NULL)
+        {
+            if (!a && entry->d_name[0] == '.')
+                continue;
+            char* file = malloc(sizeof(char) * (strlen(entry->d_name) + strlen(path) + 2));
+            sprintf(file, "%s/%s", path, entry->d_name);
+            struct stat s;
+            stat(file, &s);
+            block_count += s.st_blocks;
+        }
+        printf("total %d\n", block_count/2);
+        rewinddir(dir);
+    }
+
     while ((entry = readdir(dir)) != NULL)
     {
         if (!a && entry->d_name[0] == '.')
