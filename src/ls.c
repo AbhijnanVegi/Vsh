@@ -160,22 +160,26 @@ void file_details(char *path)
     strcpy(&modes[1], rwx[(s.st_mode >> 6) & 7]);
     strcpy(&modes[4], rwx[(s.st_mode >> 3) & 7]);
     strcpy(&modes[7], rwx[(s.st_mode & 7)]);
+    // Special file mode handling
     if (s.st_mode & S_ISUID)
         modes[3] = (s.st_mode & S_IXUSR) ? 's' : 'S';
+    
     if (s.st_mode & S_ISGID)
         modes[6] = (s.st_mode & S_IXGRP) ? 's' : 'l';
+    
     if (s.st_mode & S_ISVTX)
         modes[9] = (s.st_mode & S_IXOTH) ? 't' : 'T';
     modes[10] = '\0';
 
+    //print stuff
     printf("%s ", modes);
     printf("%ld ", s.st_nlink);
     printf("%s ", getpwuid(s.st_uid)->pw_name);
     printf("%s ", getgrgid(s.st_gid)->gr_name);
-    printf("%5.ld ", s.st_size);
+    printf("%6.ld ", s.st_size);
 
     char date[21];
-    strftime(date, 20, "%b %d %H:%M", localtime(&(s.st_ctime)));
+    strftime(date, 20, "%b %d %H:%M", localtime(&(s.st_mtime)));
     printf("%s ", date);
     return;
 }

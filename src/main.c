@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <string.h>
+#include <signal.h>
 
 #include "prompt.h"
 #include "parse.h"
@@ -19,6 +20,10 @@ int main()
 {
     char *cwd = getcwd(NULL, 0);
     
+    // Ignore ctrl+C ctrl+Z
+    signal(SIGINT, SIG_IGN);
+    signal(SIGTSTP, SIG_IGN);
+
     if (home == NULL)
     {
         homelen = strlen(cwd);
