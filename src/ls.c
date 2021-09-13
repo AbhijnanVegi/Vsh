@@ -85,7 +85,7 @@ void print_ls(char *path, bool l, bool a)
             char* file = malloc(sizeof(char) * (strlen(entry->d_name) + strlen(path) + 2));
             sprintf(file, "%s/%s", path, entry->d_name);
             struct stat s;
-            stat(file, &s);
+            if (lstat(file, &s) == -1) continue;
             block_count += s.st_blocks;
         }
         printf("total %d\n", block_count/2);
@@ -145,7 +145,7 @@ static int file_type_letter(mode_t mode) {
 void file_details(char *path)
 {
     struct stat s;
-    if (stat(path, &s) == -1)
+    if (lstat(path, &s) == -1)
     {
         char *message = malloc(sizeof(char) * (strlen(path) + strlen("ls: cannot access ''") + 1));
         sprintf(message, "ls: cannot access '%s'", path);
