@@ -3,7 +3,7 @@ A basic shell made as a part of Operating Systems and Networks course.
 
 ## Functionality
 - Prompt with username, hostname and directory
-- Basic commands : `cd`, `pwd`, `echo`, `ls`, `repeat`
+- Basic commands : `cd`, `pwd`, `echo`, `ls`, `repeat`, `pinfo`
 - Ability to run external commands as foreground and background
 
 ## Installation
