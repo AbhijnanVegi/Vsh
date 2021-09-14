@@ -67,6 +67,24 @@ void print_ls(char *path, bool l, bool a)
     DIR *dir = opendir(path);
     if (dir == NULL)
     {
+        // Check if file
+        struct stat s;
+        if (stat(path, &s) == 0)
+        {
+            if (S_ISREG(s.st_mode))
+            {
+                if (l)
+                {
+                    file_details(path);
+                }
+                char* filename = strrchr(path, '/');
+                if (filename == NULL)
+                    filename = path;
+                printf("%s\n", filename);
+                return;
+            }
+        }
+        
         char *message = malloc(sizeof(char) * (strlen(path) + strlen("ls: cannot access ''") + 1));
         sprintf(message, "ls: cannot access '%s'", path);
         check_and_throw_error(0, 0, message);
