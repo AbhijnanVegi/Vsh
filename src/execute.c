@@ -11,6 +11,7 @@
 #include "builtins.h"
 #include "utils.h"
 #include "ls.h"
+#include "jobs.h"
 
 // Function: execute
 void execute_command(ArgList *args)
@@ -62,7 +63,10 @@ void execute_external(ArgList *args)
     }
 
     if (pid == 0)
-    {
+    {   
+        signal(SIGINT, SIG_DFL);
+        signal(SIGTSTP, SIG_DFL);
+
         for (int i = 0; i < args->size; i++)
         {
             args->args[i] = replace_home(args->args[i]);
@@ -88,6 +92,7 @@ void execute_external(ArgList *args)
         else
         {
             printf("%s -> pid:%d\n", args->args[0], pid);
+            add_job(pid, args->args[0]);
         }
     }
 }

@@ -8,6 +8,7 @@
 #include "prompt.h"
 #include "parse.h"
 #include "utils.h"
+#include "jobs.h"
 
 char *line = NULL;
 size_t len = 0;
@@ -20,9 +21,15 @@ int main()
 {
     char *cwd = getcwd(NULL, 0);
     
+    //Init jobs
+    init_jobs();
+
     // Ignore ctrl+C ctrl+Z
     signal(SIGINT, SIG_IGN);
     signal(SIGTSTP, SIG_IGN);
+    
+    //Handle SIGCHLD
+    signal(SIGCHLD, child_handler);
 
     if (home == NULL)
     {
