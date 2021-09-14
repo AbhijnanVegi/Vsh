@@ -6,6 +6,7 @@
 #include <wait.h>
 
 #include "jobs.h"
+#include "prompt.h"
 
 job *jobs;
 
@@ -80,5 +81,7 @@ void child_handler(int signum)
             printf("%s with pid %d did not exit normally\n",name, pid);
             remove_job(pid);
         }
+        prompt();
+        fflush(stdout);
     }
 }

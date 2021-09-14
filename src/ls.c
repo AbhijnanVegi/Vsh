@@ -130,7 +130,7 @@ void print_ls(char *path, bool l, bool a)
 }
 
 // Returns char of file type
-static int file_type_letter(mode_t mode) {
+int file_type_letter(mode_t mode) {
     char c;
     if (S_ISREG(mode))
         c = '-';
@@ -140,23 +140,12 @@ static int file_type_letter(mode_t mode) {
         c = 'b';
     else if (S_ISCHR(mode))
         c = 'c';
-#ifdef S_ISFIFO
     else if (S_ISFIFO(mode))
         c = 'p';
-#endif
-#ifdef S_ISLNK
     else if (S_ISLNK(mode))
         c = 'l';
-#endif
-#ifdef S_ISSOCK
     else if (S_ISSOCK(mode))
         c = 's';
-#endif
-#ifdef S_ISDOOR
-    /* Solaris 2.6, etc. */
-    else if (S_ISDOOR(mode))
-        c = 'D';
-#endif
     else {
         c = '?';
     }
