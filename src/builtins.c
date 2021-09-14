@@ -47,14 +47,16 @@ void cd(ArgList *args)
     {
         printf(RED "cd: " RESET "%s\n", "Too many arguments");
     }
-
+    free(OldDir);
     OldDir = strdup(curr_dir);
+    free(curr_dir);
 }
 
 void pwd(ArgList *args)
 {
     char *cwd = getcwd(NULL, 0);
     printf("%s\n", cwd);
+    free(cwd);
 }
 
 void echo(ArgList *args)
@@ -176,5 +178,6 @@ void pinfo(ArgList *args)
     }
 
     printf("Executable Path -> %s\n", exePath);
+    free(line);
     return;
 }

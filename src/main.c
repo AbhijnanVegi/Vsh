@@ -31,11 +31,13 @@ int main()
     //Handle SIGCHLD
     signal(SIGCHLD, child_handler);
 
+    // Set home directory
     if (home == NULL)
     {
         homelen = strlen(cwd);
         home = malloc(sizeof(char) * homelen);
         strcpy(home, cwd);
+        free(cwd);
     }
 
     while (true)
@@ -50,4 +52,5 @@ int main()
         parse(line);
     }
     free(line);
+    free(home);
 }

@@ -60,6 +60,7 @@ void ls(ArgList *args)
             print_ls(replace_home(dirs->args[i]),l,a);
         }
     }
+    FreeArgs(dirs);
 }
 
 void print_ls(char *path, bool l, bool a)
@@ -125,8 +126,10 @@ void print_ls(char *path, bool l, bool a)
         printf("%s\n", entry->d_name);
         
     }
+    closedir(dir);
 }
 
+// Returns char of file type
 static int file_type_letter(mode_t mode) {
     char c;
     if (S_ISREG(mode))
@@ -160,6 +163,7 @@ static int file_type_letter(mode_t mode) {
     return (c);
 }
 
+// Prints details for a file in ls format
 void file_details(char *path)
 {
     struct stat s;
@@ -168,6 +172,7 @@ void file_details(char *path)
         char *message = malloc(sizeof(char) * (strlen(path) + strlen("ls: cannot access ''") + 1));
         sprintf(message, "ls: cannot access '%s'", path);
         check_and_throw_error(0, 0, message);
+        free(message);
         return;
     }
 
@@ -190,13 +195,12 @@ void file_details(char *path)
     modes[10] = '\0';
 
     //print stuff
+    char date[21];
     printf("%s ", modes);
     printf("%ld ", s.st_nlink);
     printf("%s ", getpwuid(s.st_uid)->pw_name);
     printf("%s ", getgrgid(s.st_gid)->gr_name);
     printf("%6.ld ", s.st_size);
-
-    char date[21];
     strftime(date, 20, "%b %d %H:%M", localtime(&(s.st_mtime)));
     printf("%s ", date);
     return;
