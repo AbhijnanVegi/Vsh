@@ -106,6 +106,7 @@ void print_ls(char *path, bool l, bool a)
             struct stat s;
             if (lstat(file, &s) == -1) continue;
             block_count += s.st_blocks;
+            free(file);
         }
         printf("total %d\n", block_count/2);
         rewinddir(dir);
