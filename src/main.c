@@ -9,6 +9,7 @@
 #include "parse.h"
 #include "utils.h"
 #include "jobs.h"
+#include "history.h"
 
 char *line = NULL;
 size_t len = 0;
@@ -31,6 +32,9 @@ int main()
     //Handle SIGCHLD
     signal(SIGCHLD, child_handler);
 
+    // Init History
+    init_history();
+
     // Set home directory
     if (home == NULL)
     {
@@ -48,7 +52,7 @@ int main()
         {
             break;
         }
-
+        write_history(line);
         parse(line);
     }
     free(line);

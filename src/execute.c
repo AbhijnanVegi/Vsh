@@ -12,6 +12,7 @@
 #include "utils.h"
 #include "ls.h"
 #include "jobs.h"
+#include "history.h"
 
 // Function: execute
 void execute_command(ArgList *args)
@@ -44,6 +45,10 @@ void execute_command(ArgList *args)
     else if (strcmp(args->args[0], "pinfo") == 0)
     {
         pinfo(args);
+    }
+    else if (strcmp(args->args[0], "history") == 0)
+    {
+        history(args);
     }
     else if (strcmp(args->args[0], "exit") == 0)
     {
