@@ -21,4 +21,5 @@ A basic shell made as a part of Operating Systems and Networks course.
 |Background jobs| [jobs.c](src/jobs.c) [jobs.h](src/jobs.h)|
 |Data structure for commands| [args.c](src/args.c) [args.h](src/args.h)|
 |Error handling, etc| [utils.c](src/utils.c) [utils.h](src/utils.h)|
+|History | [history.c](src/history.c) [history.h](src/history.h)|
 
