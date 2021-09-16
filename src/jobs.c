@@ -77,6 +77,7 @@ void child_handler(int signum)
             remove_job(pid);
         } else if (WIFSTOPPED(status)) {
             printf("%s with pid %d suspended normally\n",name, pid);
+            remove_job(pid);
         }else {
             printf("%s with pid %d did not exit normally\n",name, pid);
             remove_job(pid);

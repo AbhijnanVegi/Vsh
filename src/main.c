@@ -44,7 +44,7 @@ int main()
     {
         prompt();
         ssize_t cmd = getline(&line, &len, stdin);
-        if (cmd == EOF || (strcmp(line, "exit\n") == 0))
+        if (cmd == EOF)
         {
             break;
         }
