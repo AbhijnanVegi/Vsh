@@ -75,7 +75,7 @@ void child_handler(int signum)
         if (WIFEXITED(status)) {
             printf("\n%s with pid %d exited normally\n",name, pid);
             remove_job(pid);
-        } else if (WIFSTOPPED(status)) {
+        }else if (WIFSTOPPED(status)) {
             printf("%s with pid %d suspended normally\n",name, pid);
             remove_job(pid);
         }else {
@@ -85,4 +85,13 @@ void child_handler(int signum)
         prompt();
         fflush(stdout);
     }
+}
+
+void init_child_handler()
+{
+    struct sigaction sa;
+    sa.sa_handler = child_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGCHLD, &sa, NULL);
 }

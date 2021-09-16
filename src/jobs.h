@@ -15,4 +15,5 @@ void add_job(int pid, char *name);
 void remove_job(int pid);
 char *get_job_name(int pid);
 void child_handler(int sig);
+void init_child_handler();
 #endif // JOBS_H

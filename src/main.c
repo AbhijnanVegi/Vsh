@@ -30,8 +30,8 @@ int main()
     signal(SIGTSTP, SIG_IGN);
     
     //Handle SIGCHLD
-    signal(SIGCHLD, child_handler);
-
+    // signal(SIGCHLD, child_handler);
+    init_child_handler();
     // Init History
     init_history();
 
