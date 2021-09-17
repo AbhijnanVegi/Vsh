@@ -90,6 +90,7 @@ void execute_external(ArgList *args)
     else
     {
         int status;
+        char* tmp;
         if (!bg)
         {   
             signal(SIGTTOU, SIG_IGN);
@@ -101,7 +102,7 @@ void execute_external(ArgList *args)
         else
         {
             printf("%s -> pid:%d\n", args->args[0], pid);
-            add_job(pid, args->args[0]);
+            add_job(pid, ((tmp = strrchr(args->args[0],'/')) == NULL)? args->args[0]:tmp + 1);
         }
     }
 }
