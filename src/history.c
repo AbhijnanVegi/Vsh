@@ -39,6 +39,10 @@ ArgList *read_history()
 void write_history(char *line)
 {
     ArgList *history = read_history();
+    if (history != NULL && history->size > 0 && strcmp(history->args[0],line) == 0)
+    {
+        return;
+    }
     FILE *fp = fopen(history_file, "w");
     if (fp == NULL)
         throw_fatal_error();
@@ -52,7 +56,7 @@ void write_history(char *line)
         }
     }
     fclose(fp);
-    FreeArgs(history);
+    if (history != NULL)FreeArgs(history);
 }
 
 void history(ArgList* args)
@@ -65,6 +69,11 @@ void history(ArgList* args)
     else if (args->size == 2)
     {
         to_write = atoi(args->args[1]);
+    }
+    else
+    {
+        printf(RED"History:"RESET"Usage history <num>");
+        return;
     }
     ArgList *history = read_history();
     to_write = to_write <= history->size ? to_write : history->size;
