@@ -10,6 +10,7 @@
 #include "utils.h"
 #include "jobs.h"
 #include "history.h"
+#include "rawio.h"
 
 char *line = NULL;
 size_t len = 0;
@@ -47,11 +48,16 @@ int main()
     while (true)
     {
         prompt();
-        ssize_t cmd = getline(&line, &len, stdin);
-        if (cmd == EOF)
+        // ssize_t cmd = getline(&line, &len, stdin);
+        line = rawio();
+        if (line == NULL)
         {
             break;
         }
+        //if (cmd == EOF)
+        //{
+        //    break;
+        //}
         write_history(line);
         parse(line);
     }

@@ -74,7 +74,13 @@ void repeat(ArgList *args)
     {
         check_and_throw_error(1, -1, "repeat: Too few arguments");
     }
-    int n = atoi(args->args[1]);
+    char* ptr;
+    long n = strtol(args->args[1],&ptr,10);
+    if (ptr[0] != '\0')
+    {
+        printf(RED "repeat: "RESET "Usage: repeat <int> command\n");
+        return;
+    }
     ArgList *subcmd = malloc(sizeof(ArgList));
     InitArgs(subcmd);
     for (int i = 2; i < args->size; i++)

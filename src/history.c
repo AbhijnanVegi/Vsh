@@ -39,13 +39,24 @@ ArgList *read_history()
 void write_history(char *line)
 {
     ArgList *history = read_history();
-    if (history != NULL && history->size > 0 && strcmp(history->args[0],line) == 0)
+    int linelen = strlen(line);
+    if (line[linelen] != '\n')
+    {
+        line = realloc(line, linelen + 2);
+        line[linelen] = '\n';
+        line[linelen + 1] = '\0';
+    }
+
+    if (history != NULL && history->size > 0 && strcmp(history->args[0], line) == 0)
     {
         return;
     }
+    else if (line[0] == '\n')
+        return;
     FILE *fp = fopen(history_file, "w");
     if (fp == NULL)
         throw_fatal_error();
+
     fprintf(fp, "%s", line);
 
     if (history != NULL)
@@ -56,10 +67,11 @@ void write_history(char *line)
         }
     }
     fclose(fp);
-    if (history != NULL)FreeArgs(history);
+    if (history != NULL)
+        FreeArgs(history);
 }
 
-void history(ArgList* args)
+void history(ArgList *args)
 {
     int to_write;
     if (args->size == 1)
@@ -72,7 +84,7 @@ void history(ArgList* args)
     }
     else
     {
-        printf(RED"History:"RESET"Usage history <num>");
+        printf(RED "History:" RESET "Usage history <num>");
         return;
     }
     ArgList *history = read_history();

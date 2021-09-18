@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Vsh"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/vegi/Documents/code/Projects/Vsh"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/vegi/Documents/code/Projects/Vsh"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/vegi/Documents/code/Projects/Vsh"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="vsh">
+				<Option output="/home/vegi/Documents/code/Projects/Vsh/vsh" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vegi/Documents/code/Projects/Vsh"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 vsh"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="vsh/fast">
+				<Option output="/home/vegi/Documents/code/Projects/Vsh/vsh" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/vegi/Documents/code/Projects/Vsh"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 vsh/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/vegi/Documents/code/Projects/Vsh/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/args.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/args.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/builtins.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/builtins.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/execute.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/execute.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/history.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/history.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/jobs.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/jobs.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/ls.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/ls.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/main.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/parse.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/parse.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/prompt.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/prompt.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/rawio.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/rawio.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/utils.c">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/src/utils.h">
+			<Option target="vsh"/>
+		</Unit>
+		<Unit filename="/home/vegi/Documents/code/Projects/Vsh/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
