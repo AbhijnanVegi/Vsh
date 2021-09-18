@@ -22,4 +22,4 @@ A basic shell made as a part of Operating Systems and Networks course.
 |Data structure for commands| [args.c](src/args.c) [args.h](src/args.h)|  
 |Error handling, etc| [utils.c](src/utils.c) [utils.h](src/utils.h)|  
 |History | [history.c](src/history.c) [history.h](src/history.h)|  
-
+|Up arrow key | [rawio.c](src/rawio.c) [rawio.h](rawio.h)|
