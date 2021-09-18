@@ -48,7 +48,7 @@ void enableRawMode() {
  * @return
  */
 char* rawio() {
-    char *inp = malloc(sizeof(char) * 100);
+    char *inp = malloc(sizeof(char) * COMMAND_SIZE);
     char c;
     int history = -1;
     ArgList* h = read_history();
@@ -76,9 +76,10 @@ char* rawio() {
                             prompt();
                             history = history + 1 >= h->size ? h->size - 1 : history + 1;
                             pt = strlen(h->args[history]);
-                            if (h->args[history][strlen(h->args[history])-1] == '\n')
+                            if (h->args[history][pt-1] == '\n')
                             {
-                                h->args[history][strlen(h->args[history])-1] = '\0';
+                                h->args[history][pt-1] = '\0';
+                                pt--;
                             }
                             printf("%s", h->args[history]);
                             free(inp);
