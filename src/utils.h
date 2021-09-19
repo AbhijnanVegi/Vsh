@@ -11,7 +11,7 @@
 #define RESET "\033[0m"
 
 extern char *home;
-extern int homelen;
+extern size_t homelen;
 
 void throw_fatal_error();
 char* replace_home(char *path);

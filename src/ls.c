@@ -25,7 +25,7 @@ void ls(ArgList *args)
     {
         if ((args->args[i][0] ==  '-') && strlen(args->args[i]) > 1)
         {
-            for (int j = 1; j < strlen(args->args[i]); j++)
+            for (size_t j = 1; j < strlen(args->args[i]); j++)
             {
                 if (args->args[i][j] == 'l')
                     l = true;

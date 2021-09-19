@@ -17,7 +17,7 @@ size_t len = 0;
 ssize_t nread;
 
 char *home = NULL;
-int homelen = 0;
+size_t homelen = 0;
 
 int main()
 {
