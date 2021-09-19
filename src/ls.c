@@ -187,11 +187,14 @@ void file_details(char *path)
     //print stuff
     char date[21];
     printf("%s ", modes);
-    printf("%ld ", s.st_nlink);
+    printf("%3.ld ", s.st_nlink);
     printf("%s ", getpwuid(s.st_uid)->pw_name);
     printf("%s ", getgrgid(s.st_gid)->gr_name);
     printf("%6.ld ", s.st_size);
+    if (time(0) - s.st_mtime < 15780000)
     strftime(date, 20, "%b %d %H:%M", localtime(&(s.st_mtime)));
+    else
+    strftime(date, 20, "%b %d  %Y", localtime(&(s.st_mtime)));
     printf("%s ", date);
     return;
 }
