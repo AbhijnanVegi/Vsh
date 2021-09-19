@@ -74,11 +74,11 @@ void repeat(ArgList *args)
     {
         check_and_throw_error(1, -1, "repeat: Too few arguments");
     }
-    char* ptr;
-    long n = strtol(args->args[1],&ptr,10);
+    char *ptr;
+    long n = strtol(args->args[1], &ptr, 10);
     if (ptr[0] != '\0')
     {
-        printf(RED "repeat: "RESET "Usage: repeat <int> command\n");
+        printf(RED "repeat: " RESET "Usage: repeat <int> command\n");
         return;
     }
     ArgList *subcmd = malloc(sizeof(ArgList));
@@ -104,7 +104,13 @@ void pinfo(ArgList *args)
     }
     else if (args->size == 2)
     {
-        pid = atoi(args->args[1]);
+        char *ptr;
+        pid = strtol(args->args[1], &ptr, 10);
+        if (ptr[0] != '\0')
+        {
+            printf(RED "pinfo: " RESET "Usage: pinfo ?<int> \n");
+            return;
+        }
     }
     else
     {
@@ -163,7 +169,7 @@ void pinfo(ArgList *args)
             printf("Memory -> %s B\n", value);
             break;
         }
-        value = strtok_r(NULL, " ",&storage);
+        value = strtok_r(NULL, " ", &storage);
         counter++;
     }
 
@@ -175,7 +181,6 @@ void pinfo(ArgList *args)
     read = readlink(exeProc, exePath, 256);
     exePath[read] = '\0';
     format_directory(&exePath);
-
 
     if (read == -1)
     {

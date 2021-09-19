@@ -80,11 +80,17 @@ void history(ArgList *args)
     }
     else if (args->size == 2)
     {
-        to_write = atoi(args->args[1]);
+        char *ptr;
+        long to_write = strtol(args->args[1], &ptr, 10);
+        if (ptr[0] != '\0')
+        {
+            printf(RED "history: " RESET "Usage: history ?<num>\n");
+            return;
+        }
     }
     else
     {
-        printf(RED "History:" RESET "Usage history <num>");
+        printf(RED "History:" RESET "Usage history ?<num>");
         return;
     }
     ArgList *history = read_history();
