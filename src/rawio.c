@@ -47,15 +47,19 @@ void enableRawMode() {
  * Backspace move the cursor one control character to the left
  * @return
  */
+
+char *inp;
+int pt;
+
 char* rawio() {
-    char *inp = malloc(sizeof(char) * COMMAND_SIZE);
     char c;
+    inp = malloc(sizeof(char) * COMMAND_SIZE);
+    pt = 0;
     int history = -1;
     ArgList* h = read_history();
         setbuf(stdout, NULL);
         enableRawMode();
         memset(inp, '\0', 100);
-        int pt = 0;
         while (read(STDIN_FILENO, &c, 1) == 1) {
             if (iscntrl(c)) {
                 if (c == 10) {

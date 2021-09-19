@@ -60,3 +60,4 @@ vsh
 /cmake-build-debug/
 .idea/
 Testing/
+build/

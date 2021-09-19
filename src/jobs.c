@@ -7,6 +7,7 @@
 
 #include "jobs.h"
 #include "prompt.h"
+#include "rawio.h"
 
 job *jobs;
 
@@ -83,7 +84,7 @@ void child_handler(int signum)
             remove_job(pid);
         }
         prompt();
-        fflush(stdout);
+        printf("%s", inp);
     }
 }
 

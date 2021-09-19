@@ -7,6 +7,9 @@
 
 #define COMMAND_SIZE 128
 
+extern char *inp;
+extern int pt;
+
 void die(const char* s);
 void disableRawMode();
 void enableRawMode();
