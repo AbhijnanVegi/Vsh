@@ -160,7 +160,7 @@ void pinfo(ArgList *args)
         }
         else if (counter == 23)
         {
-            printf("Memory -> %s\n", value);
+            printf("Memory -> %s B\n", value);
             break;
         }
         value = strtok_r(NULL, " ",&storage);
