@@ -59,7 +59,7 @@ char* rawio() {
     ArgList* h = read_history();
         setbuf(stdout, NULL);
         enableRawMode();
-        memset(inp, '\0', 100);
+        memset(inp, '\0', COMMAND_SIZE);
         while (read(STDIN_FILENO, &c, 1) == 1) {
             if (iscntrl(c)) {
                 if (c == 10) {

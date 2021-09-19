@@ -48,16 +48,11 @@ int main()
     while (true)
     {
         prompt();
-        // ssize_t cmd = getline(&line, &len, stdin);
         line = rawio();
         if (line == NULL)
         {
             break;
         }
-        //if (cmd == EOF)
-        //{
-        //    break;
-        //}
         write_history(line);
         parse(line);
     }
