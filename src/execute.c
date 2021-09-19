@@ -93,6 +93,7 @@ void execute_external(ArgList *args)
         char* tmp;
         if (!bg)
         {   
+            setpgid(pid,0);
             signal(SIGTTOU, SIG_IGN);
             tcsetpgrp(0, pid);
             waitpid(pid, &status, WUNTRACED);
