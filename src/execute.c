@@ -14,6 +14,78 @@
 #include "jobs.h"
 #include "history.h"
 
+void reset_IO(int STDIN_FD, int STDOUT_FD)
+{
+    reset_I(STDIN_FD);
+    reset_O(STDOUT_FD);
+}
+
+void reset_I(int STDIN_FD)
+{
+    if (dup2(STDIN_FD,STDIN_FILENO)<0)
+        throw_fatal_error();
+    close(STDIN_FD);
+}
+
+void reset_O(int STDOUT_FD)
+{
+    if (dup2(STDOUT_FD,STDOUT_FILENO)<0)
+    throw_fatal_error();
+    close(STDOUT_FD);
+}
+
+// Parse args with IO redirection and execute
+void execute(ArgList* args)
+{
+    ArgList* cargs = malloc(sizeof(ArgList));
+    InitArgs(cargs);
+
+    //Default IO Streams
+    int STDIN_FD = dup(STDIN_FILENO);
+    int STDOUT_FD = dup(STDOUT_FILENO);
+    if (check_and_throw_error(STDIN_FD<0||STDOUT_FD<0,1,NULL))
+    {
+        return;
+    }
+
+    for (int i = 0; i < args->size; i++)
+    {
+        if (strcmp(args->args[i], "|") == 0)
+        {
+            execute_command(cargs, true);
+            FreeArgs(cargs);
+            InitArgs(cargs);
+
+            // Reset STDOUT changed by execute_command when piping
+           reset_O(STDOUT_FD);
+        }
+        else if (strcmp(args->args[i], "<") == 0)
+        {
+            if (i + 1 == args->size)
+            {
+                printf(RED"Vsh:"RESET" Missing file name after '<'\n");
+                return;
+            }
+
+            int fd = open(args->args[i + 1], O_RDONLY);
+            if (fd < 0)
+            {
+                printf(RED"Vsh:"RESET" File '%s' not found\n", args->args[i + 1]);
+                return;
+            }
+
+            dup2(fd, STDIN_FILENO);
+        }
+        else
+        {
+            AddArg(cargs, args->args[i]);
+        }
+    }
+    execute_command(cargs, false);
+    reset_IO(STDIN_FD, STDOUT_FD);
+}
+
+
 // Function: execute
 void execute_command(ArgList *args)
 {

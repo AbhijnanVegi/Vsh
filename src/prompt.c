@@ -34,7 +34,7 @@ void prompt()
 {
 
     gethostname(hostname, HOST_NAME_MAX);
-    username = getpwuid(getuid())->pw_name;
+    username = pw -> pw_name;
 
     char *cwd = getcwd(NULL, 0);
 

@@ -18,11 +18,15 @@ ssize_t nread;
 
 char *home = NULL;
 size_t homelen = 0;
+struct passwd *pw = NULL;
 
 int main()
 {
     char *cwd = getcwd(NULL, 0);
     
+    //Init pw
+    pw = getpwuid(getuid());
+
     //Init jobs
     init_jobs();
 

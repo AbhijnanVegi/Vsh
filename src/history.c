@@ -12,7 +12,7 @@ char *history_file;
 
 void init_history()
 {
-    char *home_dir = getpwuid(getuid())->pw_dir;
+    char *home_dir = pw -> pw_dir;
     history_file = malloc(strlen(home_dir) + strlen("/.history") + 1);
     sprintf(history_file, "%s/.vsh_history", home_dir);
 }

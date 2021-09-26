@@ -10,8 +10,11 @@
 #define WHITE "\033[0;37m"
 #define RESET "\033[0m"
 
+#include <pwd.h>
+
 extern char *home;
 extern size_t homelen;
+extern struct passwd* pw;
 
 void throw_fatal_error();
 char* replace_home(char *path);
