@@ -89,7 +89,7 @@ void repeat(ArgList *args)
     }
     for (int i = 0; i < n; i++)
     {
-        execute_command(subcmd);
+        execute(subcmd);
     }
     FreeArgs(subcmd);
 }

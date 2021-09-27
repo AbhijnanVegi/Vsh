@@ -32,7 +32,7 @@ void parse(char *line)
     while (token != NULL)
     {
         ArgList* args = parse_args(token);
-        execute_command(args);
+        execute(args);
 
         token = strtok_r(NULL, ";\n", &token_storage);
         FreeArgs(args);

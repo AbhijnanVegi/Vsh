@@ -47,4 +47,5 @@ void FreeArgs(ArgList *args)
         free(args->args[i]);
     }
     free(args->args);
+    free(args);
 }

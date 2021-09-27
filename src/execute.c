@@ -14,24 +14,27 @@
 #include "jobs.h"
 #include "history.h"
 
-void reset_IO(int STDIN_FD, int STDOUT_FD)
+int STDIN_FD;
+int STDOUT_FD;
+
+void reset_IO()
 {
-    reset_I(STDIN_FD);
-    reset_O(STDOUT_FD);
+    reset_I();
+    reset_O();
+    close(STDIN_FD);
+    close(STDOUT_FD);
 }
 
-void reset_I(int STDIN_FD)
+void reset_I()
 {
     if (dup2(STDIN_FD,STDIN_FILENO)<0)
         throw_fatal_error();
-    close(STDIN_FD);
 }
 
-void reset_O(int STDOUT_FD)
+void reset_O()
 {
     if (dup2(STDOUT_FD,STDOUT_FILENO)<0)
-    throw_fatal_error();
-    close(STDOUT_FD);
+        throw_fatal_error();
 }
 
 // Parse args with IO redirection and execute
@@ -41,8 +44,8 @@ void execute(ArgList* args)
     InitArgs(cargs);
 
     //Default IO Streams
-    int STDIN_FD = dup(STDIN_FILENO);
-    int STDOUT_FD = dup(STDOUT_FILENO);
+    STDIN_FD = dup(STDIN_FILENO);
+    STDOUT_FD = dup(STDOUT_FILENO);
     if (check_and_throw_error(STDIN_FD<0||STDOUT_FD<0,1,NULL))
     {
         return;
@@ -54,6 +57,7 @@ void execute(ArgList* args)
         {
             execute_command(cargs, true);
             FreeArgs(cargs);
+            cargs = malloc(sizeof(ArgList));
             InitArgs(cargs);
 
             // Reset STDOUT changed by execute_command when piping
@@ -67,7 +71,7 @@ void execute(ArgList* args)
                 return;
             }
 
-            int fd = open(args->args[i + 1], O_RDONLY);
+            int fd = open(args->args[++i], O_RDONLY);
             if (fd < 0)
             {
                 printf(RED"Vsh:"RESET" File '%s' not found\n", args->args[i + 1]);
@@ -75,6 +79,23 @@ void execute(ArgList* args)
             }
 
             dup2(fd, STDIN_FILENO);
+        }
+        else if (strcmp(args->args[i], ">") == 0)
+        {
+            if (i + 1 == args->size)
+            {
+                printf(RED"Vsh:"RESET" Missing file name after '>'\n");
+                return;
+            }
+
+            int fd = open(args->args[++i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (fd < 0)
+            {
+                perror(RED"Vsh:"RESET);
+                return;
+            }
+
+            dup2(fd, STDOUT_FILENO);
         }
         else
         {
@@ -87,13 +108,23 @@ void execute(ArgList* args)
 
 
 // Function: execute
-void execute_command(ArgList *args)
+void execute_command(ArgList *args, bool use_pipe)
 {
     if (args->size == 0)
     {
         return;
     }
 
+    int pipefd[2];
+    if (use_pipe)
+    {
+        if(check_and_throw_error( pipe(pipefd) < 0, 1,NULL) == 1)
+        {
+            return;
+        }
+        dup2(pipefd[1], STDOUT_FILENO);
+    }
+    
     if (strcmp(args->args[0], "cd") == 0)
     {
         cd(args);
@@ -130,6 +161,11 @@ void execute_command(ArgList *args)
     {
         execute_external(args);
     }
+    if (use_pipe)
+    {
+        close(pipefd[1]);
+        dup2(pipefd[0], STDIN_FILENO);
+    }
 }
 
 void execute_external(ArgList *args)
@@ -156,7 +192,12 @@ void execute_external(ArgList *args)
         setpgid(0, 0);
 
         AddArg(args, NULL);
-        int status = check_and_throw_error(execvp(args->args[0], args->args), -1, NULL);
+        int status = execvp(args->args[0], args->args);
+        if (status < 0)
+        {
+            reset_O();
+            perror(RED"Vsh:"RESET);
+        }
         exit(status);
     }
     else
