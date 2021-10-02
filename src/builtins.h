@@ -8,5 +8,5 @@ void pwd(ArgList *args);
 void echo(ArgList *args);
 void repeat(ArgList *args);
 void pinfo(ArgList *args);
-
+void jobsc(ArgList *args);
 #endif // BUILTINS_H

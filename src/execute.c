@@ -153,6 +153,10 @@ void execute_command(ArgList *args, bool use_pipe)
     {
         history(args);
     }
+    else if (strcmp(args->args[0], "jobs") == 0)
+    {
+        jobsc(args);
+    }
     else if (strcmp(args->args[0], "exit") == 0)
     {
         exit(0);

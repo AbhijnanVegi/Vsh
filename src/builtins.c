@@ -10,6 +10,7 @@
 #include "builtins.h"
 #include "execute.h"
 #include "prompt.h"
+#include "jobs.h"
 
 char *OldDir;
 
@@ -191,4 +192,98 @@ void pinfo(ArgList *args)
     printf("Executable Path -> %s\n", exePath);
     free(line);
     return;
+}
+
+void jobsc(ArgList *args)
+{
+    bool s,r;
+    if (args->size == 1)
+    {
+        s = true;
+        r = true;
+    }
+    else if (args->size == 2)
+    {
+        if (strcmp(args->args[1], "-s") == 0)
+        {
+            s = true;
+            r = false;
+        }
+        else if (strcmp(args->args[1], "-r") == 0)
+        {
+            s = false;
+            r = true;
+        }
+        else
+        {
+            printf(RED"jobsc:"RESET" Usage: jobsc [-s|-r]");
+            return;
+        }
+    }
+    else
+    {
+        printf(RED"jobsc:"RESET" Usage: jobsc [-s|-r]");
+        return;
+    }
+
+    job *walk = jobs->next;
+    for (int i = 1; walk != NULL; i++)
+    {
+        char procPath[64];
+        sprintf(procPath, "/proc/%d/stat", walk->pid);
+
+        FILE *procFile = fopen(procPath, "r");
+        if (procFile == NULL)
+        {
+            printf(RED "pinfo: " RESET "%s\n", "No such process");
+            return;
+        }
+
+        char *line = NULL;
+        size_t len = 0;
+        ssize_t read;
+
+        read = getline(&line, &len, procFile);
+
+        char status[33] = "Unknown";
+        char *value;
+        char *storage;
+        int counter = 1;
+
+        value = strtok_r(line, " ", &storage);
+        while (value != NULL)
+        {
+            if (counter == 3)
+            {
+                if (strcmp(value, "R") == 0)
+                {
+                    strcpy(status, "Running");
+                }
+                else if (strcmp(value, "S") == 0)
+                {
+                    strcpy(status, "Stopped");
+                }
+                else if (strcmp(value, "T") == 0)
+                {
+                    strcpy(status, "Stopped");
+                }
+                else if (strcmp(value, "Z") == 0)
+                {
+                    strcpy(status, "Zombie");
+                }
+                else
+                {
+                    strcpy(status, "Unknown");
+                }
+                break;
+            }
+            value = strtok_r(NULL," ", &storage);
+            counter++;
+        }
+        if (s && status[0] == 'S' || r && status[0] == 'R')
+        {
+            printf("[%d] %s %s [%d]\n", i, status, walk->name, walk->pid);
+        }
+        walk = walk->next;
+    }
 }
