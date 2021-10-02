@@ -157,6 +157,10 @@ void execute_command(ArgList *args, bool use_pipe)
     {
         jobsc(args);
     }
+    else if (strcmp(args->args[0], "sig") == 0)
+    {
+        sig(args);
+    }
     else if (strcmp(args->args[0], "exit") == 0)
     {
         exit(0);

@@ -78,7 +78,6 @@ void child_handler(int signum)
             remove_job(pid);
         }else if (WIFSTOPPED(status)) {
             printf("%s with pid %d suspended normally\n",name, pid);
-            remove_job(pid);
         }else {
             printf("%s with pid %d did not exit normally\n",name, pid);
             remove_job(pid);
@@ -95,4 +94,22 @@ void init_child_handler()
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
     sigaction(SIGCHLD, &sa, NULL);
+}
+
+pid_t get_job(int index)
+{
+    job *walk = jobs->next;
+    for (int i = 1; i <= index; i++)
+    {
+        if (walk == NULL)
+        {
+            return -1;
+        }
+        if (i == index)
+        {
+            return walk->pid;
+        }
+        walk = walk->next;
+    }
+    return -1;
 }

@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
+#include <signal.h>
 
 #include "ls.h"
 #include "args.h"
@@ -73,7 +74,7 @@ void repeat(ArgList *args)
 {
     if (args->size <= 2)
     {
-        check_and_throw_error(1, -1, "repeat: Too few arguments");
+        check_and_throw_error(1, -1, "repeat: Too few arguments\n");
     }
     char *ptr;
     long n = strtol(args->args[1], &ptr, 10);
@@ -115,7 +116,7 @@ void pinfo(ArgList *args)
     }
     else
     {
-        check_and_throw_error(1, 1, "pinfo: Too many arguments");
+        check_and_throw_error(1, 1, "pinfo: Too many arguments\n");
         return;
     }
 
@@ -125,7 +126,7 @@ void pinfo(ArgList *args)
     FILE *procFile = fopen(procPath, "r");
     if (procFile == NULL)
     {
-        printf(RED "pinfo: " RESET "%s\n", "No such process");
+        printf(RED "pinfo: " RESET "%s\n", "No such process\n");
         return;
     }
 
@@ -136,7 +137,7 @@ void pinfo(ArgList *args)
     read = getline(&line, &len, procFile);
     if (read == -1)
     {
-        printf(RED "pinfo: " RESET "%s\n", "No such process");
+        printf(RED "pinfo: " RESET "%s\n", "No such process\n");
         return;
     }
 
@@ -235,7 +236,7 @@ void jobsc(ArgList *args)
         FILE *procFile = fopen(procPath, "r");
         if (procFile == NULL)
         {
-            printf(RED "pinfo: " RESET "%s\n", "No such process");
+            printf(RED "pinfo: " RESET "%s\n", "No such process\n");
             return;
         }
 
@@ -286,4 +287,38 @@ void jobsc(ArgList *args)
         }
         walk = walk->next;
     }
+}
+
+void sig(ArgList* args)
+{
+    if (args->size != 3)
+    {
+        printf(RED "sig:"RESET" Usage: sig <pid> <signal>\n");
+        return;
+    }
+    
+    pid_t pid;
+    int pidi;
+    int sig;
+    char *ptr;
+    pidi = strtol(args->args[1], &ptr, 10);
+    if (ptr[0] != '\0')
+    {
+        printf(RED "sig:"RESET" Usage: sig <pid> <signal>\n");
+        return;
+    }
+    sig = strtol(args->args[2], &ptr, 10);
+    if (ptr[0] != '\0')
+    {
+        printf(RED "sig:"RESET" Usage: sig <pid> <signal>\n");
+        return;
+    }
+
+    pid = get_job(pidi);
+    if (pid == -1)
+    {
+        printf(RED "sig:"RESET" No such process\n");
+        return;
+    }
+    check_and_throw_error(kill(pid, sig), -1, "sig: ");
 }
