@@ -4,6 +4,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <sys/wait.h>
 
 #include "ls.h"
 #include "args.h"
@@ -197,7 +198,7 @@ void pinfo(ArgList *args)
 
 void jobsc(ArgList *args)
 {
-    bool s,r;
+    bool s, r;
     if (args->size == 1)
     {
         s = true;
@@ -217,13 +218,13 @@ void jobsc(ArgList *args)
         }
         else
         {
-            printf(RED"jobsc:"RESET" Usage: jobsc [-s|-r]");
+            printf(RED "jobsc:" RESET " Usage: jobsc [-s|-r]");
             return;
         }
     }
     else
     {
-        printf(RED"jobsc:"RESET" Usage: jobsc [-s|-r]");
+        printf(RED "jobsc:" RESET " Usage: jobsc [-s|-r]");
         return;
     }
 
@@ -278,7 +279,7 @@ void jobsc(ArgList *args)
                 }
                 break;
             }
-            value = strtok_r(NULL," ", &storage);
+            value = strtok_r(NULL, " ", &storage);
             counter++;
         }
         if (s && status[0] == 'S' || r && status[0] == 'R')
@@ -289,14 +290,14 @@ void jobsc(ArgList *args)
     }
 }
 
-void sig(ArgList* args)
+void sig(ArgList *args)
 {
     if (args->size != 3)
     {
-        printf(RED "sig:"RESET" Usage: sig <pid> <signal>\n");
+        printf(RED "sig:" RESET " Usage: sig <pid> <signal>\n");
         return;
     }
-    
+
     pid_t pid;
     int pidi;
     int sig;
@@ -304,21 +305,54 @@ void sig(ArgList* args)
     pidi = strtol(args->args[1], &ptr, 10);
     if (ptr[0] != '\0')
     {
-        printf(RED "sig:"RESET" Usage: sig <pid> <signal>\n");
+        printf(RED "sig:" RESET " Usage: sig <pid> <signal>\n");
         return;
     }
     sig = strtol(args->args[2], &ptr, 10);
     if (ptr[0] != '\0')
     {
-        printf(RED "sig:"RESET" Usage: sig <pid> <signal>\n");
+        printf(RED "sig:" RESET " Usage: sig <pid> <signal>\n");
         return;
     }
 
     pid = get_job(pidi);
     if (pid == -1)
     {
-        printf(RED "sig:"RESET" No such process\n");
+        printf(RED "sig:" RESET " No such process\n");
         return;
     }
     check_and_throw_error(kill(pid, sig), -1, "sig: ");
+}
+
+void fg(ArgList *args)
+{
+    if (args->size != 2)
+    {
+        printf(RED "fg:" RESET " Usage: fg <pid>\n");
+        return;
+    }
+
+    pid_t pid;
+    int pidi;
+    char *ptr;
+    pidi = strtol(args->args[1], &ptr, 10);
+    if (ptr[0] != '\0')
+    {
+        printf(RED "fg:" RESET " Usage: fg <pid>\n");
+        return;
+    }
+
+    pid = get_job(pidi);
+    if (pid == -1)
+    {
+        printf(RED "fg:" RESET " No such process\n");
+        return;
+    }
+    int status;
+    check_and_throw_error(kill(pid, SIGCONT), -1, "fg: ");
+    signal(SIGTTOU, SIG_IGN);
+    tcsetpgrp(0, pid);
+    waitpid(pid, &status, WUNTRACED);
+    tcsetpgrp(0, getpgrp());
+    signal(SIGTTOU, SIG_DFL);
 }

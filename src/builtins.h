@@ -10,4 +10,5 @@ void repeat(ArgList *args);
 void pinfo(ArgList *args);
 void jobsc(ArgList *args);
 void sig(ArgList *args);
+void fg(ArgList *args);
 #endif // BUILTINS_H
