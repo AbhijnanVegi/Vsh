@@ -165,6 +165,10 @@ void execute_command(ArgList *args, bool use_pipe)
     {
         fg(args);
     }
+    else if (strcmp(args->args[0], "bg") == 0)
+    {
+        bg(args);
+    }
     else if (strcmp(args->args[0], "exit") == 0)
     {
         exit(0);
@@ -221,7 +225,7 @@ void execute_external(ArgList *args)
             setpgid(pid,0);
             signal(SIGTTOU, SIG_IGN);
             tcsetpgrp(0, pid);
-            add_job(pid, args->args[0]);
+            add_job(pid, ((tmp = strrchr(args->args[0],'/')) == NULL)? args->args[0]:tmp + 1);
             waitpid(pid, &status, WUNTRACED);
             tcsetpgrp(0, getpgrp());
             signal(SIGTTOU, SIG_DFL);

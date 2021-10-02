@@ -356,3 +356,31 @@ void fg(ArgList *args)
     tcsetpgrp(0, getpgrp());
     signal(SIGTTOU, SIG_DFL);
 }
+
+void bg(ArgList *args)
+{
+    if (args->size != 2)
+    {
+        printf(RED "bg:" RESET " Usage: bg <pid>\n");
+        return;
+    }
+
+    pid_t pid;
+    int pidi;
+    char *ptr;
+    pidi = strtol(args->args[1], &ptr, 10);
+    if (ptr[0] != '\0')
+    {
+        printf(RED "bg:" RESET " Usage: bg <pid>\n");
+        return;
+    }
+
+    pid = get_job(pidi);
+    if (pid == -1)
+    {
+        printf(RED "bg:" RESET " No such process\n");
+        return;
+    }
+    int status;
+    check_and_throw_error(kill(pid, SIGCONT), -1, "bg: ");
+}
