@@ -227,6 +227,7 @@ void execute_external(ArgList *args)
             tcsetpgrp(0, pid);
             add_job(pid, ((tmp = strrchr(args->args[0],'/')) == NULL)? args->args[0]:tmp + 1);
             waitpid(pid, &status, WUNTRACED);
+            remove_job(pid);
             tcsetpgrp(0, getpgrp());
             signal(SIGTTOU, SIG_DFL);
         }
