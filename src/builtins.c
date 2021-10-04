@@ -353,6 +353,10 @@ void fg(ArgList *args)
     signal(SIGTTOU, SIG_IGN);
     tcsetpgrp(0, pid);
     waitpid(pid, &status, WUNTRACED);
+    if (!WIFSTOPPED(status))
+    {
+        remove_job(pid);
+    }
     tcsetpgrp(0, getpgrp());
     signal(SIGTTOU, SIG_DFL);
 }
@@ -383,4 +387,72 @@ void bg(ArgList *args)
     }
     int status;
     check_and_throw_error(kill(pid, SIGCONT), -1, "bg: ");
+}
+
+void replay(ArgList *args)
+{
+    bool command = false, interval = false, period = false;
+    bool reading_command = false;
+    int interval_time = 0, period_time = 0;
+    ArgList *subcmd = malloc(sizeof(ArgList));
+    InitArgs(subcmd);
+    if (args->size < 7)
+    {
+        printf(RED "replay:" RESET " Usage: replay -command <command> -interval <time> -period <time>\n");
+        return;
+    }
+    for (int i = 1; i < args->size; i++)
+    {
+        if (strcmp(args->args[i], "-command") == 0)
+        {
+            reading_command = true;
+            command = true;
+        }
+        else if (strcmp(args->args[i], "-interval") == 0)
+        {
+            reading_command = false;
+            interval = true;
+            i++;
+            char *ptr;
+            interval_time = strtol(args->args[i], &ptr, 10);
+            if (ptr[0] != '\0')
+            {
+                printf(RED "replay:" RESET " Usage: replay -command <command> -interval <time> -period <time>\n");
+                return;
+            }
+        }
+        else if (strcmp(args->args[i], "-period") == 0)
+        {
+            reading_command = false;
+            period = true;
+            i++;
+            char *ptr;
+            period_time = strtol(args->args[i], &ptr, 10);
+            if (ptr[0] != '\0')
+            {
+                printf(RED "replay:" RESET " Usage: replay -command <command> -interval <time> -period <time>\n");
+                return;
+            }
+        }
+        else if (reading_command)
+        {
+            AddArg(subcmd, args->args[i]);
+        }
+        else
+        {
+            printf(RED "replay:" RESET " Usage: replay -command <command> -interval <time> -period <time>\n");
+            return;
+        }
+    }
+    if (!(command && interval && period))
+    {
+        printf(RED "replay:" RESET " Usage: replay -command <command> -interval <time> -period <time>\n");
+        return;
+    }
+
+    for (int i = 0; i < period_time/interval_time; i++)
+    {
+        sleep(period_time);
+        execute_command(subcmd, false);
+    }
 }

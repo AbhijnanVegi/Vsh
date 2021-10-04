@@ -169,6 +169,10 @@ void execute_command(ArgList *args, bool use_pipe)
     {
         bg(args);
     }
+    else if (strcmp(args->args[0], "replay") == 0)
+    {
+        replay(args);
+    }
     else if (strcmp(args->args[0], "exit") == 0)
     {
         exit(0);
@@ -227,7 +231,10 @@ void execute_external(ArgList *args)
             tcsetpgrp(0, pid);
             add_job(pid, ((tmp = strrchr(args->args[0],'/')) == NULL)? args->args[0]:tmp + 1);
             waitpid(pid, &status, WUNTRACED);
+            if (!WIFSTOPPED(status))
+            {
             remove_job(pid);
+            }
             tcsetpgrp(0, getpgrp());
             signal(SIGTTOU, SIG_DFL);
         }
