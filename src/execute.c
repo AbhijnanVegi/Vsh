@@ -61,7 +61,7 @@ void execute(ArgList* args)
             InitArgs(cargs);
 
             // Reset STDOUT changed by execute_command when piping
-           reset_O(STDOUT_FD);
+            reset_O(STDOUT_FD);
         }
         else if (strcmp(args->args[i], "<") == 0)
         {
