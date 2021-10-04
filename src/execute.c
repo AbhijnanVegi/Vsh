@@ -111,6 +111,7 @@ void execute(ArgList* args)
                 perror(RED"Vsh:"RESET);
                 return;
             }
+        }
         else
         {
             AddArg(cargs, args->args[i]);
