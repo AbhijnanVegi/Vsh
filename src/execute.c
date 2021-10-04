@@ -97,6 +97,20 @@ void execute(ArgList* args)
 
             dup2(fd, STDOUT_FILENO);
         }
+        else if (strcmp(args->args[i], ">>") == 0)
+        {
+            if (i + 1 == args->size)
+            {
+                printf(RED"Vsh:"RESET" Missing file name after '>>'\n");
+                return;
+            }
+
+            int fd = open(args->args[++i], O_WRONLY | O_CREAT | O_APPEND, 0644);
+            if (fd < 0)
+            {
+                perror(RED"Vsh:"RESET);
+                return;
+            }
         else
         {
             AddArg(cargs, args->args[i]);
