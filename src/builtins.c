@@ -196,6 +196,13 @@ void pinfo(ArgList *args)
     return;
 }
 
+int JobSortcmp(const void *a, const void *b)
+{
+    struct JobSort *job1 = (struct JobSort *)a;
+    struct JobSort *job2 = (struct JobSort *)b;
+    return strcmp(job1->name, job2->name) == 0? job1->index > job2->index : strcmp(job1->name, job2->name);
+}
+
 void jobsc(ArgList *args)
 {
     bool s, r;
@@ -229,10 +236,27 @@ void jobsc(ArgList *args)
     }
 
     job *walk = jobs->next;
-    for (int i = 1; walk != NULL; i++)
+    int jobcount = 0;
+    while (walk != NULL)
+    {
+        jobcount++;
+        walk = walk->next;
+    }
+    struct JobSort JobsArr[jobcount];
+    walk = jobs->next;
+    for (int i = 0; i < jobcount; i++)
+    {
+        JobsArr[i].index = i;
+        JobsArr[i].pid = walk->pid;
+        JobsArr[i].name = walk->name;
+        walk = walk->next;
+    }
+    qsort(JobsArr, jobcount, sizeof(struct JobSort), JobSortcmp);
+
+    for (int i = 0;i < jobcount ; i++)
     {
         char procPath[64];
-        sprintf(procPath, "/proc/%d/stat", walk->pid);
+        sprintf(procPath, "/proc/%d/stat", JobsArr[i].pid);
 
         FILE *procFile = fopen(procPath, "r");
         if (procFile == NULL)
@@ -284,9 +308,8 @@ void jobsc(ArgList *args)
         }
         if (s && status[0] == 'S' || r && status[0] == 'R')
         {
-            printf("[%d] %s %s [%d]\n", i, status, walk->name, walk->pid);
+            printf("[%d] %s %s [%d]\n", JobsArr[i].index, status, JobsArr[i].name, JobsArr[i].pid);
         }
-        walk = walk->next;
     }
 }
 
@@ -450,7 +473,7 @@ void replay(ArgList *args)
         return;
     }
 
-    for (int i = 0; i < period_time/interval_time; i++)
+    for (int i = 0; i < period_time / interval_time; i++)
     {
         sleep(period_time);
         execute_command(subcmd, false);

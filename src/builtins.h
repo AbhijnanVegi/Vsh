@@ -13,4 +13,11 @@ void sig(ArgList *args);
 void fg(ArgList *args);
 void bg(ArgList *args);
 void replay(ArgList *args);
+
+struct JobSort {
+    int index;
+    int pid;
+    char* name;
+};
+
 #endif // BUILTINS_H
