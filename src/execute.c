@@ -111,6 +111,8 @@ void execute(ArgList* args)
                 perror(RED"Vsh:"RESET);
                 return;
             }
+
+            dup2(fd, STDOUT_FILENO);
         }
         else
         {
