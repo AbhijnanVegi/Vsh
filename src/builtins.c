@@ -246,7 +246,7 @@ void jobsc(ArgList *args)
     walk = jobs->next;
     for (int i = 0; i < jobcount; i++)
     {
-        JobsArr[i].index = i;
+        JobsArr[i].index = i + 1;
         JobsArr[i].pid = walk->pid;
         JobsArr[i].name = walk->name;
         walk = walk->next;
@@ -287,7 +287,7 @@ void jobsc(ArgList *args)
                 }
                 else if (strcmp(value, "S") == 0)
                 {
-                    strcpy(status, "Stopped");
+                    strcpy(status, "Running");
                 }
                 else if (strcmp(value, "T") == 0)
                 {

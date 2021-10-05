@@ -153,6 +153,30 @@ src/args.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/vsh.dir/build.make CMakeFiles/vsh.dir/src/args.c.s
 .PHONY : src/args.c.s
 
+src/baywatch.o: src/baywatch.c.o
+.PHONY : src/baywatch.o
+
+# target to build an object file
+src/baywatch.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vsh.dir/build.make CMakeFiles/vsh.dir/src/baywatch.c.o
+.PHONY : src/baywatch.c.o
+
+src/baywatch.i: src/baywatch.c.i
+.PHONY : src/baywatch.i
+
+# target to preprocess a source file
+src/baywatch.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vsh.dir/build.make CMakeFiles/vsh.dir/src/baywatch.c.i
+.PHONY : src/baywatch.c.i
+
+src/baywatch.s: src/baywatch.c.s
+.PHONY : src/baywatch.s
+
+# target to generate assembly for a file
+src/baywatch.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vsh.dir/build.make CMakeFiles/vsh.dir/src/baywatch.c.s
+.PHONY : src/baywatch.c.s
+
 src/builtins.o: src/builtins.c.o
 .PHONY : src/builtins.o
 
@@ -405,6 +429,9 @@ help:
 	@echo "... src/args.o"
 	@echo "... src/args.i"
 	@echo "... src/args.s"
+	@echo "... src/baywatch.o"
+	@echo "... src/baywatch.i"
+	@echo "... src/baywatch.s"
 	@echo "... src/builtins.o"
 	@echo "... src/builtins.i"
 	@echo "... src/builtins.s"

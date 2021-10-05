@@ -15,4 +15,6 @@ add_executable(
         src/utils.c
         src/history.c
         src/parse.c
-        src/rawio.c src/rawio.h)
+        src/rawio.c
+        src/baywatch.c
+)

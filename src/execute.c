@@ -13,6 +13,7 @@
 #include "ls.h"
 #include "jobs.h"
 #include "history.h"
+#include "baywatch.h"
 
 int STDIN_FD;
 int STDOUT_FD;
@@ -189,6 +190,10 @@ void execute_command(ArgList *args, bool use_pipe)
     else if (strcmp(args->args[0], "replay") == 0)
     {
         replay(args);
+    }
+    else if (strcmp(args->args[0], "baywatch") == 0)
+    {
+        baywatch(args);
     }
     else if (strcmp(args->args[0], "exit") == 0)
     {
