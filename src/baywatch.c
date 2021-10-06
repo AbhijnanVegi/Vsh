@@ -78,6 +78,29 @@ void newborn(int sleep_time)
     exit(0);
 }
 
+void dirty(int sleep_time)
+{
+    while(true)
+    {
+        FILE *mem_file = fopen("/proc/meminfo", "r");
+        if (mem_file < 0)
+        {
+            perror("baywatch: ");
+        }
+        char *line = NULL;
+        size_t len = 0;
+        for (int i = 0; i < 17; i++)
+        {
+            getline(&line, &len, mem_file);
+        }
+        fclose(mem_file);
+        ArgList *data = parse_args(line);
+        printf("%s %s", data->args[1], data->args[2]);
+        sleep(sleep_time);
+    }
+    exit(0);
+}
+
 void baywatch(ArgList *args)
 {
     int interval = 5;
@@ -115,6 +138,10 @@ void baywatch(ArgList *args)
             else if (strcmp(args->args[i], "newborn") == 0)
             {
                 cmd = &newborn;
+            }
+            else if (strcmp(args->args[i], "dirty") == 0)
+            {
+                cmd = &dirty;
             }
             else
             {
