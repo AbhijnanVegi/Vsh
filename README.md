@@ -16,6 +16,7 @@ A basic shell made as a part of Operating Systems and Networks course.
 |Prompt| [prompt.c](src/prompt.c) [prompt.h](src/prompt.h)|  
 |cd, pwd, echo, repeat, jobs, fg, bg, sig, replay | [builtins.c](src/builtins.c) [builtins.h](src/builtins.h)|  
 |ls | [ls.c](src/ls.c) [ls.h](src/ls.h)|  
+|Baywatch | [baywatch.c](src/baywatch.c) [baywatch.h](src/baywatch.h)|
 |Input parser| [parse.c](src/parse.c) [parse.h](src/parse.h)|  
 |External commands|[execute.c](src/execute.c) [execute.h](src/execute.h)|  
 |Background jobs| [jobs.c](src/jobs.c) [jobs.h](src/jobs.h)|  
