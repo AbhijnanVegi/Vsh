@@ -36,8 +36,9 @@ ArgList *read_history()
     return history;
 }
 
-void write_history(char *line)
+void write_history(char *_line)
 {
+    char* line = strdup(_line);
     ArgList *history = read_history();
     int linelen = strlen(line);
     if (line[linelen] != '\n')
