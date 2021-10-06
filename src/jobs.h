@@ -4,12 +4,14 @@
 #include <unistd.h>
 
 typedef struct job {
+    int job_no;
     pid_t pid;
     char *name;
     struct job *next;
 } job;
 
 extern job *jobs;
+extern int job_count;
 void init_jobs();
 void add_job(int pid, char *name);
 void remove_job(int pid);

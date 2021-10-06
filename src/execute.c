@@ -28,26 +28,26 @@ void reset_IO()
 
 void reset_I()
 {
-    if (dup2(STDIN_FD,STDIN_FILENO)<0)
+    if (dup2(STDIN_FD, STDIN_FILENO) < 0)
         throw_fatal_error();
 }
 
 void reset_O()
 {
-    if (dup2(STDOUT_FD,STDOUT_FILENO)<0)
+    if (dup2(STDOUT_FD, STDOUT_FILENO) < 0)
         throw_fatal_error();
 }
 
 // Parse args with IO redirection and execute
-void execute(ArgList* args)
+void execute(ArgList *args)
 {
-    ArgList* cargs = malloc(sizeof(ArgList));
+    ArgList *cargs = malloc(sizeof(ArgList));
     InitArgs(cargs);
 
     //Default IO Streams
     STDIN_FD = dup(STDIN_FILENO);
     STDOUT_FD = dup(STDOUT_FILENO);
-    if (check_and_throw_error(STDIN_FD<0||STDOUT_FD<0,1,NULL))
+    if (check_and_throw_error(STDIN_FD < 0 || STDOUT_FD < 0, 1, NULL))
     {
         return;
     }
@@ -68,14 +68,14 @@ void execute(ArgList* args)
         {
             if (i + 1 == args->size)
             {
-                printf(RED"Vsh:"RESET" Missing file name after '<'\n");
+                printf(RED "Vsh:" RESET " Missing file name after '<'\n");
                 return;
             }
 
             int fd = open(args->args[++i], O_RDONLY);
             if (fd < 0)
             {
-                printf(RED"Vsh:"RESET" File '%s' not found\n", args->args[i + 1]);
+                printf(RED "Vsh:" RESET " File '%s' not found\n", args->args[i + 1]);
                 return;
             }
 
@@ -85,14 +85,14 @@ void execute(ArgList* args)
         {
             if (i + 1 == args->size)
             {
-                printf(RED"Vsh:"RESET" Missing file name after '>'\n");
+                printf(RED "Vsh:" RESET " Missing file name after '>'\n");
                 return;
             }
 
             int fd = open(args->args[++i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if (fd < 0)
             {
-                perror(RED"Vsh:"RESET);
+                perror(RED "Vsh:" RESET);
                 return;
             }
 
@@ -102,14 +102,14 @@ void execute(ArgList* args)
         {
             if (i + 1 == args->size)
             {
-                printf(RED"Vsh:"RESET" Missing file name after '>>'\n");
+                printf(RED "Vsh:" RESET " Missing file name after '>>'\n");
                 return;
             }
 
             int fd = open(args->args[++i], O_WRONLY | O_CREAT | O_APPEND, 0644);
             if (fd < 0)
             {
-                perror(RED"Vsh:"RESET);
+                perror(RED "Vsh:" RESET);
                 return;
             }
 
@@ -124,7 +124,6 @@ void execute(ArgList* args)
     reset_IO(STDIN_FD, STDOUT_FD);
 }
 
-
 // Function: execute
 void execute_command(ArgList *args, bool use_pipe)
 {
@@ -136,13 +135,13 @@ void execute_command(ArgList *args, bool use_pipe)
     int pipefd[2];
     if (use_pipe)
     {
-        if(check_and_throw_error( pipe(pipefd) < 0, 1,NULL) == 1)
+        if (check_and_throw_error(pipe(pipefd) < 0, 1, NULL) == 1)
         {
             return;
         }
         dup2(pipefd[1], STDOUT_FILENO);
     }
-    
+
     if (strcmp(args->args[0], "cd") == 0)
     {
         cd(args);
@@ -222,7 +221,7 @@ void execute_external(ArgList *args)
     }
 
     if (pid == 0)
-    {   
+    {
         signal(SIGINT, SIG_DFL);
         signal(SIGTSTP, SIG_DFL);
 
@@ -238,32 +237,33 @@ void execute_external(ArgList *args)
         if (status < 0)
         {
             reset_O();
-            perror(RED"Vsh:"RESET);
+            perror(RED "Vsh:" RESET);
+            exit(0);
         }
         exit(status);
     }
     else
     {
         int status;
-        char* tmp;
+        char *tmp;
         if (!bg)
-        {   
-            setpgid(pid,0);
+        {
+            setpgid(pid, 0);
             signal(SIGTTOU, SIG_IGN);
             tcsetpgrp(0, pid);
-            add_job(pid, ((tmp = strrchr(args->args[0],'/')) == NULL)? args->args[0]:tmp + 1);
             waitpid(pid, &status, WUNTRACED);
-            if (!WIFSTOPPED(status))
-            {
-            remove_job(pid);
-            }
             tcsetpgrp(0, getpgrp());
+            if (WIFSTOPPED(status))
+            {
+                add_job(pid, ((tmp = strrchr(args->args[0], '/')) == NULL) ? args->args[0] : tmp + 1);
+                printf("[%d] %d suspended %s\n", job_count, pid, ((tmp = strrchr(args->args[0], '/')) == NULL) ? args->args[0] : tmp + 1);
+            }
             signal(SIGTTOU, SIG_DFL);
         }
         else
         {
-            printf("%s -> pid:%d\n", args->args[0], pid);
-            add_job(pid, ((tmp = strrchr(args->args[0],'/')) == NULL)? args->args[0]:tmp + 1);
+            add_job(pid, ((tmp = strrchr(args->args[0], '/')) == NULL) ? args->args[0] : tmp + 1);
+            printf("[%d] %d %s\n", job_count, pid, ((tmp = strrchr(args->args[0], '/')) == NULL) ? args->args[0] : tmp + 1);
         }
     }
 }

@@ -10,6 +10,7 @@
 #include "rawio.h"
 
 job *jobs;
+int job_count = 0;
 
 void init_jobs()
 {
@@ -21,6 +22,7 @@ void init_jobs()
 void add_job(int pid, char* name)
 {
     struct job* new_job = malloc(sizeof(struct job));
+    new_job->job_no = ++job_count;
     new_job->pid = pid;
     new_job->name = strdup(name);
     new_job->next = NULL;
@@ -99,13 +101,13 @@ void init_child_handler()
 pid_t get_job(int index)
 {
     job *walk = jobs->next;
-    for (int i = 1; i <= index; i++)
+    for (int i = 1; i <= job_count; i++)
     {
         if (walk == NULL)
         {
             return -1;
         }
-        if (i == index)
+        if (i == walk->job_no)
         {
             return walk->pid;
         }

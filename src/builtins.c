@@ -246,7 +246,7 @@ void jobsc(ArgList *args)
     walk = jobs->next;
     for (int i = 0; i < jobcount; i++)
     {
-        JobsArr[i].index = i + 1;
+        JobsArr[i].index = walk->job_no;
         JobsArr[i].pid = walk->pid;
         JobsArr[i].name = walk->name;
         walk = walk->next;
