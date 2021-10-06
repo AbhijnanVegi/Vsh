@@ -58,6 +58,26 @@ void interrupt(int sleep_time)
     exit(0);
 }
 
+void newborn(int sleep_time)
+{
+    while(true)
+    {
+        FILE *newborn_file = fopen("/proc/loadavg", "r");
+        if (newborn_file < 0)
+        {
+            perror("baywatch: ");
+        }
+        char *line = NULL;
+        size_t len = 0;
+        getline(&line, &len, newborn_file);
+        fclose(newborn_file);
+        ArgList *newborns = parse_args(line);
+        printf("%s", newborns->args[4]);
+        sleep(sleep_time);
+    }
+    exit(0);
+}
+
 void baywatch(ArgList *args)
 {
     int interval = 5;
@@ -91,6 +111,15 @@ void baywatch(ArgList *args)
             if (strcmp(args->args[i], "interrupt") == 0)
             {
                 cmd = &interrupt;
+            }
+            else if (strcmp(args->args[i], "newborn") == 0)
+            {
+                cmd = &newborn;
+            }
+            else
+            {
+                printf("baywatch: Unknown command %s", args->args[i]);
+                return;
             }
         }
     }
