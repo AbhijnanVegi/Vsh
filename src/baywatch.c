@@ -20,12 +20,15 @@ void _interrupt(void)
     }
     char *line = NULL;
     size_t len = 0;
-    for (int i = 0; i < 3;i++)
+    ArgList *interrupts = parse_args(line);
+    for (int i = 0; i < 5;i++)
     {
         getline(&line, &len, interrupt_file);
+        interrupts = parse_args(line);
+        if (strcmp(interrupts->args[interrupts->size-1], "i8042\n") == 0)
+            break;
     }
     fclose(interrupt_file);
-    ArgList *interrupts = parse_args(line);
     for (int i = 1; i < interrupts->size - 3; i++)
     {
         printf("%s\t", interrupts->args[i]);
@@ -145,7 +148,7 @@ void baywatch(ArgList *args)
             }
             else
             {
-                printf("baywatch: Unknown command %s", args->args[i]);
+                printf("baywatch: Unknown command %s\n", args->args[i]);
                 return;
             }
         }
